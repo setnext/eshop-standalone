@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: eshop
+  name: eshop
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: eshop
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: eshop
+    spec:
+      containers:
+      - name: eshop
+        image: localhost:5001/eshop-web-local:v3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: config-volume
+          mountPath: /usr/share/nginx/html/assets/config/config.json
+          subPath: config.json
+      volumes:
+      - name: config-volume
+        configMap:
+          name: eshop-web-config
+      restartPolicy: Always

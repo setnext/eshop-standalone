@@ -1,0 +1,84 @@
+pipeline {
+
+  agent none
+
+  environment {
+    ENV ="dev"
+    NAME = "eshop-web"
+    K8S_NAMESPACE = "${NAME}-${ENV}"
+    GIT_HUB_URL = "https://github.com/setnext/eshop.git"
+    GIT_HUB_CREDENTIAL_ID = "04b7fff3-441b-491a-9c6d-1654a7fd0b77"
+    GIT_COMMIT_REV = ""
+    GIT_HUB_BRANCH = "main"
+    VERSION = "${env.BUILD_ID}-${GIT_COMMIT_REV}"
+    IMAGE = "${NAME}:${VERSION}"
+    REPONAME = "setnext"
+    KUSTOMIZE_LOCATION = "cicd/yaml/overlays/dev"
+    KUSTOMIZE_BASE_LOCATION = "cicd/yaml/base"
+    
+  }
+  stages {
+    stage('Checkout Eshop Web Api') {
+      agent any
+      steps {
+        script {
+          def scmVars = checkout([$class: 'GitSCM',
+            branches: [
+              [name: "*/${GIT_HUB_BRANCH}"]
+            ],
+            userRemoteConfigs: [
+              [credentialsId: "${GIT_HUB_CREDENTIAL_ID}",
+                url: "${GIT_HUB_URL}"
+              ]
+            ]
+          ])
+          GIT_COMMIT_REV = scmVars.GIT_COMMIT.substring(0, 7)
+          VERSION = "${env.BUILD_ID}-${GIT_COMMIT_REV}"
+          env.IMAGETAG = "${NAME}:${VERSION}"
+
+        }
+      }
+    }
+    stage('Build and Test') {
+      agent {
+        docker {
+          image 'node:lts-buster-slim'
+          args '-v /Users/nbabu/.npm:/root/.npm -u root:root'
+        }
+      }
+    steps {
+      sh 'npm install'
+      sh 'npm run build'
+    }
+    }
+    stage('Docker Build') {
+      agent any
+      steps {
+        script {
+          sh 'docker build --build-arg --progress=plain --no-cache -t ${REPONAME}/${IMAGETAG} .'
+        }
+      }
+    }
+    stage('Push Image to Hub') {
+    	agent any
+      steps {
+      	withCredentials([usernamePassword(credentialsId: 'setnextdockerhub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+        	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push ${REPONAME}/${IMAGETAG}'
+        }
+      }
+    }
+    stage('Deploy to Kubernetes Cluster') {
+      agent any
+      steps {
+        script {
+          sh "sed -i '' 's#{image}#${REPONAME}/${IMAGETAG}#' ${KUSTOMIZE_BASE_LOCATION}/deployment.yaml"
+          sh "sed -i '' 's#{NAMESPACE}#${K8S_NAMESPACE}#' ${KUSTOMIZE_LOCATION}/namespace.yaml"
+          sh "kubectl apply -f ${KUSTOMIZE_LOCATION}/namespace.yaml"
+          sh "sed -i '' 's#{NAMESPACE}#${K8S_NAMESPACE}#' ${KUSTOMIZE_LOCATION}/kustomization.yaml"
+          sh "kustomize build ${KUSTOMIZE_LOCATION} | kubectl apply -f -"
+        }
+      }
+    }
+  }
+}

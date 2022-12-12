@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eshop
+  name: eshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eshop
+  strategy:
+    type: Recreate

@@ -1,0 +1,129 @@
+body {
+	background-color: #000
+}
+
+.card {
+	border: none
+}
+
+.product {
+	background-color: #eee
+}
+
+.brand {
+	font-size: 13px
+}
+
+.act-price {
+	color: red;
+	font-weight: 700
+}
+
+.dis-price {
+	text-decoration: line-through
+}
+
+.about {
+	font-size: 14px
+}
+
+.color {
+	margin-bottom: 10px
+}
+
+label.radio {
+	cursor: pointer
+}
+
+label.radio input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	visibility: hidden;
+	pointer-events: none
+}
+
+label.radio span {
+	padding: 2px 9px;
+	border: 2px solid #ff0000;
+	display: inline-block;
+	color: #1a0101;
+	border-radius: 1px;
+	text-transform: uppercase
+}
+
+label.radio input:checked+span {
+	border-color: #ff0000;
+
+	background-color: #ff0000;
+	color: #fff
+}
+
+
+label.radio div {
+	padding: 2px 9px;
+	border: 1px solid #121111;
+	display: inline-block;
+	color: #1a0101;
+	border-radius: 1px;
+	text-transform: uppercase
+}
+
+label.radio input:checked+div {
+	border: 3px solid rgb(5, 162, 214);
+
+	background-color: #ff0000;
+	color: rgb(206, 8, 180)
+}
+
+
+
+.btn-danger {
+	background-color: #ff0000 !important;
+	border-color: #ff0000 !important
+}
+
+.btn-danger:hover {
+	background-color: #da0606 !important;
+	border-color: #da0606 !important
+}
+
+.btn-danger:focus {
+	box-shadow: none
+}
+
+.cart i {
+	margin-right: 10px
+}
+
+.color-box {
+   
+    background-color: rgb(242, 233, 233);
+
+}
+
+
+
+.input-color {
+    position: relative;
+}
+
+.input-color .color-box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+/* .fa-heart:before  {
+    color: red;
+	cursor: pointer;
+}
+
+.fa-share-alt::before{
+	color: blue;
+	cursor: pointer;
+} */
+

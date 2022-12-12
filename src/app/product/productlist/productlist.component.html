@@ -1,0 +1,100 @@
+<div class="container bg-white">
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+  </div>
+  <div class="row">
+    <div *ngIf="loading" class="d-flex justify-content-center m-5">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngFor="let productItem of productList | paginate: {
+            itemsPerPage: tableSize,
+            currentPage: page,
+            totalItems: count
+          };
+    let i = index;"
+      [ngClass]="productList.length > 3 ? 'col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3:col-lg-3':'col-lg-auto col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3:col-lg-3'">
+
+      <div class="product"> 
+        <a [routerLink]="['/dp',productItem.title.replaceAll(' ', '-'),productItem._id]" [queryParams]="{'cat':productCategory}"><img
+          src="{{imageUrl + productItem.image_url + '?d=500x750'}}" alt=""></a>
+        <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
+          <li class="icon">
+            <a href="javascript:void(0)" (click)="show(productItem)">
+              <fa-icon [icon]="faExpandAlt"></fa-icon>
+            </a>
+          </li>
+          <li class="icon mx-3">
+            <fa-icon [icon]="faHeart"></fa-icon>
+          </li>
+          <li *ngIf="productItem.in_stock" class="icon">
+            <fa-icon [icon]="faShoppingBag"></fa-icon>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="productItem.featured_tag" class="tag bg-red">{{productItem.featured_tag}}</div>
+      <!-- <div *ngIf="productItem.isNew" class="tag bg-green">new</div>
+            <div *ngIf="productItem.isOutOfStock" class="tag bg-black">out of stock</div> -->
+
+      <div class="title pt-4 pb-1">{{productItem.title.substring(0,10)}}</div>
+      <div class="d-flex align-content-left">
+        <fa-icon [ngStyle]="productItem.star_rating>0?{'color':'orange'}:{'color':'grey'}"  [icon]="productItem.star_rating>0.5?faStar:faStarHalf"></fa-icon>
+        <fa-icon [ngStyle]="productItem.star_rating>1?{'color':'orange'}:{'color':'grey'}"  [icon]="productItem.star_rating>1.5?faStar:productItem.star_rating>1?faStarHalf:faStar"></fa-icon>
+        <fa-icon [ngStyle]="productItem.star_rating>2?{'color':'orange'}:{'color':'grey'}"  [icon]="productItem.star_rating>2.5?faStar:productItem.star_rating>2?faStarHalf:faStar"></fa-icon>
+        <fa-icon [ngStyle]="productItem.star_rating>3?{'color':'orange'}:{'color':'grey'}" [icon]="productItem.star_rating>3.5?faStar:productItem.star_rating>3?faStarHalf:faStar"></fa-icon>
+        <fa-icon [ngStyle]="productItem.star_rating>4?{'color':'orange'}:{'color':'grey'}" [icon]="productItem.star_rating>4.5?faStar:productItem.star_rating>4?faStarHalf:faStar"></fa-icon>
+      </div>
+      <div><span [ngClass]="productItem.is_on_sale ? 'price onsale': 'price'">$
+          {{productItem.priceInfo.mrp_price}}</span> <span *ngIf="productItem.is_on_sale" class="price mx-2">$
+          {{productItem.priceInfo.sale_price}}</span></div>
+      <div>
+        <!-- <a routerLink="../../{{'dp/'+productItem.title.replaceAll(' ', '-')+'/'+ productItem._id}}/">Detail</a> -->
+        <a [routerLink]="['/dp',productItem.title.replaceAll(' ', '-'),productItem._id]" [queryParams]="{'cat':productCategory}">Detail</a>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+  </div>
+
+  <div *ngIf="productList.length==0 && error==''" class="container bg-white">
+    <h4>
+      <fa-icon style="color: red;" [icon]="faFileCircleExclamation"></fa-icon> No products found
+    </h4>
+  </div>
+  <div *ngIf="error!=''" class="container bg-white">
+    <h4 style="color:red ;">
+      <fa-icon [icon]="faTriangleExclamation"> </fa-icon> {{error}}
+    </h4>
+  </div>
+  
+  <div *ngIf="currentProduct?.image_url" [style.display]="showModal ? 'block' : 'none'" class="modal" id="imagemodal"
+    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title h6 bg-light mx-3" id="myModalLabel">{{currentProduct?.title}}</h4>
+          <button type="button" class="btn btn-default " data-dismiss="modal" (click)="hide()">
+            <fa-icon [icon]="faClose"></fa-icon>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img src="{{imageUrl + currentProduct?.image_url + '?d=1000x1500'}}"
+            id="imagepreview" style="height: 70vh;">
+        </div>
+        <div class="modal-footer mb-4, mr-3">
+          <button type="button" class="btn btn-dark mt-2 mb-2 mr-2" data-dismiss="modal" (click)="hide()"> Close X
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

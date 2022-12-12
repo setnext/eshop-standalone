@@ -1,0 +1,55 @@
+
+<div class="container grey-body">
+    <div class="mt-2">
+    </div>
+    <div *ngIf="loading" class="d-flex justify-content-center m-5">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="banners.data" class="row">
+      <div class="col-8">
+        <img src="{{cmsOrigin + banners?.data[0]?.attributes.image.data.attributes.formats.large.url}}" class="img-responsive" alt="..."/> 
+    </div>
+      <div class="col-4">
+        <div class="row">
+            <div class="col-12">
+            <img src="{{cmsOrigin + banners?.data[1]?.attributes.image.data.attributes.formats.large.url}}" class="img-fluid" alt="..."/>
+        </div>
+        <div class="mt-2">
+        </div>
+        <div class="col-12">
+            <img src="{{cmsOrigin + banners?.data[0]?.attributes.image.data.attributes.formats.large.url}}" class="img-fluid" alt="..."/>
+        </div>
+        <div class="mt-2">
+        </div>
+        <div class="col-12">
+            <img src="{{cmsOrigin + banners?.data[1]?.attributes.image.data.attributes.formats.large.url}}" class="img-fluid" alt="..."/>
+        </div>
+        </div>
+        
+      </div>
+      
+    </div>
+
+    <div class="mt-2">
+    </div>
+    
+    <div class="row">
+            <div class="col-md-4 px-0" *ngFor="let smbanner of smbanners; index as i;">
+                <img src="{{cmsOrigin + smbanner.attributes.image.data.attributes.formats.small.url}}" class="col-lg-12 col-sm-12 d-flex flex-column align-items-center justify-content-center product-item my-3"  alt="...">
+                
+            
+            </div>    
+        
+        
+       
+    </div>
+
+    
+    
+  </div>
+
+<!-- <li *ngFor="let banner of banners; index as i;">
+    <img src="{{'http://localhost:1337' + banner.Image.formats.large.url}}" class="img-fluid" alt="...">
+</li> -->

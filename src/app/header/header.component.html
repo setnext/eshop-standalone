@@ -1,0 +1,217 @@
+<header class="p-3 text-bg-dark">
+  <!-- <nav class="navbar fixed-top navbar-dark bg-dark"> -->
+    <div>
+      
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="#" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <object data="assets/eshop.svg" width="auto" height="35"> </object>
+        </a>
+        <div style="width:20px"></div>
+        <div></div>
+        
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a routerLink="/bannerHome" routerLinkActive="myclass" ariaCurrentWhenActive="page" class="nav-link px-2 text-white">Home</a></li>
+          <li><a routerLink='/products/fashion' routerLinkActive="myclass"  ariaCurrentWhenActive="page" class="nav-link px-2 text-white">Fashion</a></li>
+          <li><a routerLink='/products/electronics' routerLinkActive="active"  ariaCurrentWhenActive="page" class="nav-link px-2 text-white">Electronics</a></li>
+          <li><a routerLink='/products/grocery' routerLinkActive="active"  ariaCurrentWhenActive="page" class="nav-link px-2 text-white">Grocery</a></li>
+          <li><a routerLink='/products/sports' routerLinkActive="active"  ariaCurrentWhenActive="page" class="nav-link px-2 text-white">Food</a></li>
+              
+          <li>
+            <div class="dropdown">
+              <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <span >Others</span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" >Baby Products</a></li>
+                <li><a class="dropdown-item" >Beauty</a></li>
+                <li><a class="dropdown-item" >Books</a></li>
+                <li><a class="dropdown-item" >Cell Phones & Accessories</a></li>
+                <li><a class="dropdown-item" >Consumer Electornics</a></li>
+                <li><a class="dropdown-item" >Health & Personal Care</a></li>
+                <li><a class="dropdown-item" >Home and Kitchen</a></li>
+                <li><a class="dropdown-item" >Pet Supplies</a></li>
+                <li><a class="dropdown-item" >Sports and Outdoors</a></li>
+              </ul>
+            </div>
+
+          </li>
+        </ul>
+       
+  
+        <form class="form-inline col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3" role="search">
+          <!-- <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search"> -->
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="dropdown">
+               
+                <button class="btn btn-light dropdown-toggle half-rounded" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span >All</span>
+                </button>
+            
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" >Baby Products</a></li>
+                  <li><a class="dropdown-item" >Beauty</a></li>
+                  <li><a class="dropdown-item" >Books</a></li>
+                  <li><a class="dropdown-item" >Cell Phones & Accessories</a></li>
+                  <li><a class="dropdown-item" >Consumer Electornics</a></li>
+                  <li><a class="dropdown-item" >Health & Personal Care</a></li>
+                  <li><a class="dropdown-item" >Home and Kitchen</a></li>
+                  <li><a class="dropdown-item" >Pet Supplies</a></li>
+                  <li><a class="dropdown-item" >Sports and Outdoors</a></li>
+                </ul>
+              </div>
+            </div>
+            <input type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+            <button type="button" class="btn btn-secondary">Go</button>
+          </div>
+        </form>
+        
+        <div *ngIf="isLoggedIn" class="dropdown">
+          <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <span style="font-size: 10pt;">Hello, {{user.firstName.length < 11 ? user.firstName : user.firstName.substring(0,13) }}</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" (click)="logout()" >Logout</a></li>
+          </ul>
+        </div>
+        <div class="text-end mx-1">
+          <button type="button" (click)="openFormModal()"  class="btn btn-dark me-2"><fa-icon  [icon]="faShoppingCart"></fa-icon><span class="badge bg-secondary mx-2">4</span> </button>
+          <!-- <button class="btn btn-dark me-2" type="button" data-target="#quoteForm" data-toggle="modal"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="cart_count">3</span></button> -->
+        </div>
+
+        
+
+
+        
+        <div *ngIf="!isLoggedIn" class="text-end">
+          <button type="button" [routerLink]="'/login'" class="btn btn-outline-light me-2">Login</button>
+          <button type="button" [routerLink]="'/signup'" class="btn btn-warning">Sign-up</button>
+        </div>
+      </div>
+    </div>
+  <!-- </nav> -->
+
+  <div class="modal fade" id="quoteForm" tabindex="-1" role="dialog" aria-labelledby="quoteForm" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered bg-light" role="document">
+      <div class="modal-content p-md-3 tbl-head">
+        <div class="modal-header">
+          <h4 class="modal-title"><span class="tbl-head">Your Items Cart</span></h4>
+          <button class="close" type="button" (click)="saveSomeThing()" data-dismiss="modal" aria-label="Close"><i class="fa fa-window-close" aria-hidden="true"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="pb-5">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+        
+                  <!-- Shopping cart table -->
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="border-0 tbl-head">
+                            <div class="p-2 px-3 text-uppercase text-dark">Product</div>
+                          </th>
+                          <th scope="col" class="border-0 tbl-head">
+                            <div class="py-2 text-uppercase text-dark">Price</div>
+                          </th>
+                          <th scope="col" class="border-0 tbl-head">
+                            <div class="py-2 text-uppercase text-dark">Quantity</div>
+                          </th>
+                          <th scope="col" class="border-0 tbl-head">
+                            <div class="py-2 text-uppercase text-dark">Remove</div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row" class="border-0">
+                            <div class="p-2">
+                              <img src="https://therichpost.com/wp-content/uploads/2020/06/jeans3.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                              <div class="mx-3 d-inline-block align-middle">
+                                <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Timex Unisex Originals</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td class="border-0 align-middle"><strong>$79.00</strong></td>
+                          <td class="border-0 align-middle"><strong>3</strong></td>
+                          <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">
+                            <div class="p-2">
+                              <img src="https://therichpost.com/wp-content/uploads/2020/06/jeans3.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                              <div class="mx-3 d-inline-block align-middle">
+                                <h5 class="mb-0"><a href="#" class="text-dark d-inline-block">Lumix camera lense</a></h5><span class="text-muted font-weight-normal font-italic">Category: Electronics</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td class="align-middle"><strong>$79.00</strong></td>
+                          <td class="align-middle"><strong>3</strong></td>
+                          <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">
+                            <div class="p-2">
+                              <img src="https://therichpost.com/wp-content/uploads/2020/06/jeans3.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                              <div class="mx-3 d-inline-block align-middle">
+                                <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block">Gray Nike running shoe</a></h5><span class="text-muted font-weight-normal font-italic">Category: Fashion</span>
+                              </div>
+                            </div></th>
+                            <td class="align-middle"><strong>$79.00</strong></td>
+                            <td class="align-middle"><strong>3</strong></td>
+                            <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- End -->
+                </div>
+              </div>
+        
+              <div class="row py-5 p-4 bg-white rounded shadow-sm">
+                <div class="col-lg-6">
+                  <div class="tbl-head rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
+                  <div class="p-4">
+                    <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
+                    <div class="input-group mb-4 border rounded-pill p-2">
+                      <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
+                      <div class="input-group-append border-0">
+                        <button id="button-addon3" type="button" class="btn btn-primary px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tbl-head rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions for seller</div>
+                  <div class="p-4">
+                    <p class="font-italic mb-4">If you have some information for the seller you can leave them in the box below</p>
+                    <textarea name="" cols="30" rows="2" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="tbl-head rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+                  <div class="p-4">
+                    <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
+                    <ul class="list-unstyled mb-4">
+                      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
+                      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
+                      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>$0.00</strong></li>
+                      <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+                        <h5 class="font-weight-bold">$400.00</h5>
+                      </li>
+                    </ul><a href="#" class="btn btn-primary rounded-pill py-2 btn-block">Procceed to checkout</a>
+                  </div>
+                </div>
+              </div>
+        
+            </div>
+          </div>
+        
+        </div>
+      </div>
+    </div>
+
+  </div>
+</header>

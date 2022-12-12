@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eshop-web-config
+data:
+  config.json: |
+    {
+    "contentServiceUrl": "http://localhost:8085",
+    "authorizationHeader": "Bearer 660d2e58aca53f23c927128b6297b67354bcdd199756903b985be1447be24084c7b61ccca4d81a7aa368a8879670ec200ceb7dc92b7850463aa078581292c1b21a472772844d56916044b2a3430301f0002eb4c4497eaafd0b766b33e5f95a697ef604e1aeec1d130fee87b7e3bb324b452a5978ac503c2bb5b85cf71c5a68bc"
+    }

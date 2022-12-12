@@ -1,0 +1,61 @@
+.form-control-dark {
+    border-color: var(--bs-gray);
+  }
+  .form-control-dark:focus {
+    border-color: #fff;
+    box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+  }
+  
+  .text-small {
+    font-size: 85%;
+  }
+  
+  .dropdown-toggle {
+    outline: 0;
+
+  }
+  .half-rounded {
+    border-radius: 1em 0 0 1em !important;
+}
+
+  .dropdown-menu  { background-color:#faf3f3;
+  }
+
+  .myclass {
+
+    text-decoration: underline;    
+    text-underline-offset: 0.5rem; 
+    text-decoration-color: gray;  
+
+  }
+  
+  .cart_count {
+    position: relative;
+    top: -3px;
+    left: 0;
+    font-size: 9px;
+    background-color: #FF324D;
+    border-radius: 50px;
+    height: 16px;
+    line-height: 16px;
+    color: #fff;
+    min-width: 16px;
+    text-align: center;
+    padding: 0 5px;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: -5px;
+    margin-right: -5px;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #0CDA90;
+    border-color: #0CDA90;
+}
+
+.tbl-head {
+
+  background-color: #EAEDED!important;
+  color: black;
+
+}

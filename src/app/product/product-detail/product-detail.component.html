@@ -1,0 +1,175 @@
+<div class="container-flux mt-5 mb-5">
+   
+    <div *ngIf="loading" class="d-flex justify-content-center m-5">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="product==null && error==''" class="container bg-white">
+        <h4>
+            <fa-icon style="color: red;" [icon]="faFileCircleExclamation"></fa-icon> No product found {{pname}}
+        </h4>
+    </div>
+    <div *ngIf="error!=''" class="container bg-white">
+        <h4 style="color:red ;">
+            <fa-icon [icon]="faTriangleExclamation"> </fa-icon> {{error}}
+        </h4>
+    </div>
+    <div *ngIf="product!=null" class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+
+                <ol class="breadcrumb">
+
+                    <li *ngIf="landingCategory.length>2" class="breadcrumb-item active" aria-current="page"><a [routerLink]="['/',landingCategory[1],landingCategory[2]]">{{landingCategory[2]}}</a></li>
+                    <li *ngIf="landingCategory.length>3" class="breadcrumb-item active" aria-current="page"><a [routerLink]="['/',landingCategory[1],landingCategory[2],landingCategory[3]]">{{landingCategory[3]}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a [routerLink]="">{{product.title.replaceAll(' ', '-')}}</a></li>
+                    
+                </ol>
+              </nav>
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-1 d-none d-xl-block">
+                        <div *ngFor="let state of product.additional_image_urls; index as i"
+                            class="thumbnail text-center mt-2 border"> <img
+                                (mouseover)='over(product.additional_image_urls[i])'
+                                src="{{imageUrl}}{{product.additional_image_urls[i]}}?d=100x100" width="70"> </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="images">
+                            <div class="text-center"> <img id="main-image" src="{{imageUrl}}{{product.image_url}}?d=1000x1500"
+                                    width="400" height="600" /> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3">
+                        <div class="product p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i><a [routerLink]="landingCategory.length>3?['/',landingCategory[1],landingCategory[2],landingCategory[3]]:['/',landingCategory[1],landingCategory[2]]"> <span
+                                        class="ml-1">Back</span></a> </div> 
+                                        <span><span class="mx-4"><i [ngStyle]="wishItem?{color:'red'}:{color:'pink'}" (click)="wishlist(product._id)"  id="wishlist-span"   class="fa fa-lg fa-heart text-red"></i></span><i class="fa fa-lg fa-share-alt"></i></span>
+                            </div>
+                            <div class="mt-4 mb-3"> <span
+                                    class="text-uppercase text-muted brand">{{product.brand}}</span>
+                                <h5 class="text-uppercase">{{product.title}}</h5>
+                                <div class="price d-flex flex-row align-items-center">
+                                    <span *ngIf="product.is_on_sale && product.priceInfo.sale_price!=null"
+                                        class="act-price">${{product.priceInfo.sale_price}}</span>
+                                    <div class="ml-2"> <small
+                                            [ngClass]="product.is_on_sale? 'dis-price mx-2':'act-price'">${{product.priceInfo.mrp_price}}</small>
+                                        <span class="mx-2 text-success"
+                                            *ngIf="product.is_on_sale && product.priceInfo.discount!=null">{{product.priceInfo.discount}}
+                                            Offer</span> </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-content-left">
+                                <fa-icon [ngStyle]="product.star_rating>0?{'color':'orange'}:{'color':'grey'}"  [icon]="product.star_rating>0.5?faStar:faStarHalf"></fa-icon>
+                                <fa-icon [ngStyle]="product.star_rating>1?{'color':'orange'}:{'color':'grey'}"  [icon]="product.star_rating>1.5?faStar:product.star_rating>1?faStarHalf:faStar"></fa-icon>
+                                <fa-icon [ngStyle]="product.star_rating>2?{'color':'orange'}:{'color':'grey'}"  [icon]="product.star_rating>2.5?faStar:product.star_rating>2?faStarHalf:faStar"></fa-icon>
+                                <fa-icon [ngStyle]="product.star_rating>3?{'color':'orange'}:{'color':'grey'}" [icon]="product.star_rating>3.5?faStar:product.star_rating>3?faStarHalf:faStar"></fa-icon>
+                                <fa-icon [ngStyle]="product.star_rating>4?{'color':'orange'}:{'color':'grey'}" [icon]="product.star_rating>4.5?faStar:product.star_rating>4?faStarHalf:faStar"></fa-icon>
+                              </div>
+                            <p class="about">{{product.description}}</p>
+                        <div 
+                                class="row sizes mt-5">
+                            <div class="col-lg-3 col-md-6 col-sm-3 col-xs-3">
+                                <h6 class="text-uppercase">Color :  <span>{{selectedColor}} </span>  </h6>
+                            </div>
+                            <div class="col-lg-3 col-md-1 col-sm-4 col-xs-4"
+                            [ngStyle]="{'height' : '20px', 'width' : '20px','background-color':selectedColor}">
+                            </div>
+                        
+
+                                <ul *ngIf="product.variantInfo!=null && product.variantInfo.colors!=null" class="list-group list-group-horizontal ">
+                                    <li *ngFor="let pcolor of product.variantInfo.colors; index as i"
+                                        class="list-group-item xcolor-box">
+                                        <label class="radio"> 
+                                            <input type="radio" (change)="onChangeColor($event)"
+                                            name="color" value="{{pcolor}}" [checked]="product.color==pcolor" >
+                                        <div
+                                            [ngStyle]="{'height' : '20px', 'width' : '20px','background-color':pcolor}">
+                                           
+
+                                        </div>
+                                        </label>
+
+                                    </li>
+
+                                </ul>
+                            </div> 
+                            <div *ngIf="product.variantInfo!=null && product.variantInfo.sizes!=null" class="sizes mt-5"> 
+                                <h6 class="text-uppercase">Size :  <span>{{selectedSize}}</span></h6>
+                                <label *ngFor="let psize of product.variantInfo.sizes; index as i" class="radio">
+    
+                                    <input type="radio" (change)="onChangeSize($event)"
+                                        name="size" value="{{psize}}" [checked]="product.size==psize" > <span>{{psize}}</span>
+                                    </label>
+
+                                        
+                                        
+                            </div>
+                            <div class="mt-3"><span class="fw-bold">Model:</span> {{product.model}}</div>
+                            <div class="mt-3"><span class="fw-bold">Availability:</span>{{product.in_stock?' In Stock': ' Not Available'}}</div>
+                            
+                            <div *ngIf="product.feature_attributes!=null">
+
+                                <div  *ngFor="let attribute of product.feature_attributes; index as i" class="mt-3"><span class="fw-bold text-capitalize">{{attribute.key}}:</span> {{attribute.value}}</div>
+
+                            </div>
+
+                          
+                        
+                        <div class="cart mt-4 align-items-center"> 
+                            <button
+                            [ngClass]="product.in_stock?'btn btn-danger text-uppercase mr-2 px-4':'btn btn-light text-uppercase mr-2 px-4'" [disabled]="!product.in_stock">Add to cart</button>
+                            
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-flux mt-5 mb-5">
+    <div class="col-md-12 mt-3">
+        <div class="product p-4">
+            <div class="row">
+            <div class="col-md-6 d-flex justify-content-between align-items-center table-responsive">
+               
+                <table *ngIf="product.techical_attributes!=null" class="table table-responsive w-100">
+                    <thead>
+                        <tr>
+                          <th scope="col" style="color:red ;">Techical Details</th>
+                          <th scope="col"></th>
+                          
+                        </tr>
+                      </thead>
+                    <tbody>
+                      <tr *ngFor="let tattribute of product.techical_attributes" >
+                        <th scope="row">{{tattribute.key}}</th>
+                        <td>{{tattribute.value}}</td>
+                        
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+            
+                    
+                  
+            
+            </div>
+            <div class="col-md-6 d-flex justify-content-between align-items-center">
+                <div *ngIf="product.product_notes!=null" class="mt-3">
+                    <span class="fw-bold mb-5">About this item:</span>
+                    <div class="mb-2"></div>
+                    <ul  class="list-group list-group-flush">
+                        <li *ngFor="let note of product.product_notes" class="list-group-item">{{note}}</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+                
+        </div>
+    </div>
+</div>

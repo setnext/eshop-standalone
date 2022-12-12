@@ -1,0 +1,159 @@
+<div class="container bg-white">
+  <div *ngIf="loading" class="d-flex justify-content-center m-5">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  
+    <nav class="navbar navbar-expand-md navbar-light bg-white">
+        <div class="container-fluid p-0"> 
+          <a class="navbar-brand text-uppercase fw-800" href="#">
+            <span class="border-red pe-2">New</span>Product</a> 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#myNav" aria-controls="myNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse mx-5" id="myNav">
+                <div class="navbar-nav" *ngFor="let tab of tabs"> 
+                    <a [ngClass]="{
+                        'nav-link active': tab.is_landing_category,
+                        'nav-link': !tab.is_landing_category
+                    }" ariaCurrentWhenActive="page" routerLink="..{{tabContext}}/{{tab.sub_category_path}}" routerLinkActive="active">{{tab.sub_category}}</a> </div>
+                </div>
+        </div>
+    </nav>
+    <div class="row">
+        <aside class="d-none d-lg-block col-lg-2 mt-5 mr-5">
+        <div>
+            <div class="card px-2" >
+                <article class="card-group-item">
+                    <header class="card-header mb-2">
+                        <h6 class="title">Brands </h6>
+                    </header>
+                    <div class="filter-content">
+                        <div class="card-body px-2 mx-4">
+                        <form>
+                            <label class="form-check">
+                              <input class="form-check-input" type="checkbox" value="">
+                              <span class="form-check-label">
+                                Puma
+                              </span>
+                            </label> <!-- form-check.// -->
+                            <label class="form-check">
+                              <input class="form-check-input" type="checkbox" value="">
+                              <span class="form-check-label">
+                                Nike
+                              </span>
+                            </label>  <!-- form-check.// -->
+                            <label class="form-check">
+                              <input class="form-check-input" type="checkbox" value="">
+                              <span class="form-check-label">
+                                Any Other
+                              </span>
+                            </label>  <!-- form-check.// -->
+                        </form>
+            
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+                
+                <article class="card-group-item">
+                    <header class="card-header mt-2 mb-2">
+                        <h6 class="title">Choose type </h6>
+                    </header>
+                    <div class="filter-content">
+                        <div class="card-body px-2 mx-4">
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                          <span class="form-check-label">
+                            Winter
+                          </span>
+                        </label>
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                          <span class="form-check-label">
+                            Summer
+                          </span>
+                        </label>
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                          <span class="form-check-label">
+                            Trends
+                          </span>
+                        </label>
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="card px-2" >
+                <article class="card-group-item">
+                    <header class="card-header mb-2">
+                        <h6 class="title">Brands </h6>
+                    </header>
+                    <div class="filter-content">
+                        <div class="card-body px-2 mx-4">
+                        <form>
+                            <label class="form-check">
+                              <input class="form-check-input" type="checkbox" value="">
+                              <span class="form-check-label">
+                                Mersedes Benz
+                              </span>
+                            </label> <!-- form-check.// -->
+                            <label class="form-check">
+                              <input class="form-check-input" type="checkbox" value="">
+                              <span class="form-check-label">
+                                Nissan Altima
+                              </span>
+                            </label>  <!-- form-check.// -->
+                            <label class="form-check">
+                              <input class="form-check-input" type="checkbox" value="">
+                              <span class="form-check-label">
+                                Another Brand
+                              </span>
+                            </label>  <!-- form-check.// -->
+                        </form>
+            
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+                
+                <article class="card-group-item">
+                    <header class="card-header mt-2 mb-2">
+                        <h6 class="title">Choose type </h6>
+                    </header>
+                    <div class="filter-content">
+                        <div class="card-body px-2 mx-4">
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                          <span class="form-check-label">
+                            First hand items
+                          </span>
+                        </label>
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                          <span class="form-check-label">
+                            Brand new items
+                          </span>
+                        </label>
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="exampleRadio" value="">
+                          <span class="form-check-label">
+                            Some other option
+                          </span>
+                        </label>
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+            </div>
+        </div>
+        
+    </aside>
+    
+        <div class="col-lg-9 col-sm-10 mx-2 d-flex flex-column align-items-center justify-content-center product-item my-3">
+            <router-outlet></router-outlet>
+        </div>
+        
+    </div>
+    
+</div>
+
+
